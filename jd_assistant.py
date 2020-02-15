@@ -94,7 +94,7 @@ class Assistant(object):
             'rid': str(int(time.time() * 1000)),
         }
         try:
-            resp = self.sess.get(url=url, params=payload, allow_redirects=False)
+            resp = self.sess.get(url = url, params = payload, allow_redirects = False)
             if resp.status_code == requests.codes.OK:
                 return True
         except Exception as e:
@@ -113,7 +113,7 @@ class Assistant(object):
             'version': 2015,
             'r': random.random(),
         }
-        resp = self.sess.post(url, params=payload, data=data, headers=self.headers)
+        resp = self.sess.post(url, params = payload, data = data, headers = self.headers)
         if not response_status(resp):
             logger.error('获取是否需要验证码失败')
             return False
@@ -136,7 +136,7 @@ class Assistant(object):
             'User-Agent': self.user_agent,
             'Referer': 'https://passport.jd.com/uc/login',
         }
-        resp = self.sess.get(url, params=payload, headers=headers)
+        resp = self.sess.get(url, params = payload, headers = headers)
 
         if not response_status(resp):
             logger.error('获取验证码失败')
@@ -148,7 +148,7 @@ class Assistant(object):
 
     def _get_login_page(self):
         url = "https://passport.jd.com/new/login.aspx"
-        page = self.sess.get(url, headers=self.headers)
+        page = self.sess.get(url, headers = self.headers)
         return page
 
     @deprecated
@@ -204,7 +204,7 @@ class Assistant(object):
             'User-Agent': self.user_agent,
             'Origin': 'https://passport.jd.com',
         }
-        resp = self.sess.post(url=login_url, data=data, headers=headers, params=payload)
+        resp = self.sess.post(url = login_url, data = data, headers = headers, params = payload)
 
         if not response_status(resp):
             logger.error('登录失败')
@@ -257,7 +257,7 @@ class Assistant(object):
             'User-Agent': self.user_agent,
             'Referer': 'https://passport.jd.com/new/login.aspx',
         }
-        resp = self.sess.get(url=url, headers=headers, params=payload)
+        resp = self.sess.get(url = url, headers = headers, params = payload)
 
         if not response_status(resp):
             logger.info('获取二维码失败')
@@ -281,7 +281,7 @@ class Assistant(object):
             'User-Agent': self.user_agent,
             'Referer': 'https://passport.jd.com/new/login.aspx',
         }
-        resp = self.sess.get(url=url, headers=headers, params=payload)
+        resp = self.sess.get(url = url, headers = headers, params = payload)
 
         if not response_status(resp):
             logger.error('获取二维码扫描结果异常')
@@ -301,7 +301,7 @@ class Assistant(object):
             'User-Agent': self.user_agent,
             'Referer': 'https://passport.jd.com/uc/login?ltype=logout',
         }
-        resp = self.sess.get(url=url, headers=headers, params={'t': ticket})
+        resp = self.sess.get(url = url, headers = headers, params = {'t': ticket})
 
         if not response_status(resp):
             return False
@@ -357,7 +357,7 @@ class Assistant(object):
             'User-Agent': self.user_agent,
             'Referer': 'https://item.jd.com/{}.html'.format(sku_id),
         }
-        resp = self.sess.get(url=url, params=payload, headers=headers)
+        resp = self.sess.get(url = url, params = payload, headers = headers)
         resp_json = parse_json(resp.text)
         # {"type":"1","hasAddress":false,"riskCheck":"0","flag":false,"num":941723,"stime":"2018-10-12 12:40:00","plusEtime":"","qiangEtime":"","showPromoPrice":"0","qiangStime":"","state":2,"sku":100000287121,"info":"\u9884\u7ea6\u8fdb\u884c\u4e2d","isJ":0,"address":"","d":48824,"hidePrice":"0","yueEtime":"2018-10-19 15:01:00","plusStime":"","isBefore":0,"url":"//yushou.jd.com/toYuyue.action?sku=100000287121&key=237af0174f1cffffd227a2f98481a338","etime":"2018-10-19 15:01:00","plusD":48824,"category":"4","plusType":0,"yueStime":"2018-10-12 12:40:00"};
         reserve_url = resp_json.get('url')
@@ -377,7 +377,7 @@ class Assistant(object):
             'User-Agent': self.user_agent,
             'Referer': 'https://item.jd.com/{}.html'.format(sku_id),
         }
-        resp = self.sess.get(url=reserve_url, headers=headers)
+        resp = self.sess.get(url = reserve_url, headers = headers)
         soup = BeautifulSoup(resp.text, "html.parser")
         reserve_result = soup.find('p', {'class': 'bd-right-result'}).text.strip(' \t\r\n')
         # 预约成功，已获得抢购资格 / 您已成功预约过了，无需重复预约
@@ -398,7 +398,7 @@ class Assistant(object):
             'Referer': 'https://order.jd.com/center/list.action',
         }
         try:
-            resp = self.sess.get(url=url, params=payload, headers=headers)
+            resp = self.sess.get(url = url, params = payload, headers = headers)
             resp_json = parse_json(resp.text)
             # many user info are included in response, now return nick name in it
             # jQuery2381773({"imgUrl":"//storage.360buyimg.com/i.imageUpload/xxx.jpg","lastLoginTime":"","nickName":"xxx","plusStatus":"0","realName":"xxx","userLevel":x,"userScoreVO":{"accountScore":xx,"activityScore":xx,"consumptionScore":xxxxx,"default":false,"financeScore":xxx,"pin":"xxx","riskScore":x,"totalScore":xxxxx}})
@@ -412,7 +412,7 @@ class Assistant(object):
         :return: 响应
         """
         url = 'https://item.jd.com/{}.html'.format(sku_id)
-        page = requests.get(url=url, headers=self.headers)
+        page = requests.get(url = url, headers = self.headers)
         return page
 
     def get_single_item_stock(self, sku_id, num, area):
@@ -453,7 +453,7 @@ class Assistant(object):
             'Referer': 'https://item.jd.com/{}.html'.format(sku_id),
         }
         try:
-            resp = requests.get(url=url, params=payload, headers=headers, timeout=self.timeout)
+            resp = requests.get(url = url, params = payload, headers = headers, timeout = self.timeout)
         except requests.exceptions.Timeout:
             logger.error('查询 %s 库存信息超时(%ss)', sku_id, self.timeout)
             return False
@@ -481,7 +481,7 @@ class Assistant(object):
         :param area: 地区id
         :return: 多个商品是否同时有货 True/False
         """
-        items_dict = parse_sku_id(sku_ids=sku_ids)
+        items_dict = parse_sku_id(sku_ids = sku_ids)
         area_id_list = split_area_id(area)
 
         url = 'https://trade.jd.com/api/v1/batch/stock'
@@ -509,7 +509,7 @@ class Assistant(object):
         data = json.dumps(data)
 
         try:
-            resp = self.sess.post(url=url, headers=headers, data=data, timeout=self.timeout)
+            resp = self.sess.post(url = url, headers = headers, data = data, timeout = self.timeout)
         except requests.exceptions.Timeout:
             logger.error('查询 %s 库存信息超时(%ss)', list(items_dict.keys()), self.timeout)
             return False
@@ -537,8 +537,8 @@ class Assistant(object):
         :param area: 地区id
         :return: 多个商品是否同时有货 True/False
         """
-        items_dict = parse_sku_id(sku_ids=sku_ids)
-        area_id = parse_area_id(area=area)
+        items_dict = parse_sku_id(sku_ids = sku_ids)
+        area_id = parse_area_id(area = area)
 
         url = 'https://c0.3.cn/stocks'
         payload = {
@@ -552,7 +552,7 @@ class Assistant(object):
             'User-Agent': self.user_agent
         }
         try:
-            resp = requests.get(url=url, params=payload, headers=headers, timeout=self.timeout)
+            resp = requests.get(url = url, params = payload, headers = headers, timeout = self.timeout)
         except requests.exceptions.Timeout:
             logger.error('查询 %s 库存信息超时(%ss)', list(items_dict.keys()), self.timeout)
             return False
@@ -575,7 +575,7 @@ class Assistant(object):
         :param sku_id: 商品id
         :return: 商品是否下架 True/False
         """
-        detail_page = self._get_item_detail_page(sku_id=sku_id)
+        detail_page = self._get_item_detail_page(sku_id = sku_id)
         return '该商品已下柜' in detail_page.text
 
     @check_login
@@ -585,15 +585,15 @@ class Assistant(object):
         :param area: 地址id
         :return: 商品是否能下单 True/False
         """
-        items_dict = parse_sku_id(sku_ids=sku_ids)
+        items_dict = parse_sku_id(sku_ids = sku_ids)
         area_id = parse_area_id(area)
 
         # 判断商品是否能下单
         if len(items_dict) > 1:
-            return self.get_multi_item_stock_new(sku_ids=items_dict, area=area_id)
+            return self.get_multi_item_stock_new(sku_ids = items_dict, area = area_id)
 
         sku_id, count = list(items_dict.items())[0]
-        return self.get_single_item_stock(sku_id=sku_id, num=count, area=area_id)
+        return self.get_single_item_stock(sku_id = sku_id, num = count, area = area_id)
 
     def get_item_price(self, sku_id):
         """获取商品价格
@@ -606,11 +606,11 @@ class Assistant(object):
             'pduid': int(time.time() * 1000),
             'skuIds': 'J_' + sku_id,
         }
-        resp = self.sess.get(url=url, params=payload)
+        resp = self.sess.get(url = url, params = payload)
         return parse_json(resp.text).get('p')
 
     @check_login
-    def add_item_to_cart(self, sku_ids):
+    def add_item_to_cart(self, sku_ids, interval = 4):
         """添加商品到购物车
 
         重要：
@@ -621,6 +621,7 @@ class Assistant(object):
         京东购物车可容纳的最大商品种数约为118-120种，超过数量会加入购物车失败。
 
         :param sku_ids: 商品id，格式："123" 或 "123,456" 或 "123:1,456:2"。若不配置数量，默认为1个。
+        :param interval: 加入购物车失败时重试间隔时间。默认为4秒
         :return:
         """
         url = 'https://cart.jd.com/gate.action'
@@ -628,23 +629,27 @@ class Assistant(object):
             'User-Agent': self.user_agent,
         }
 
-        for sku_id, count in parse_sku_id(sku_ids=sku_ids).items():
-            payload = {
-                'pid': sku_id,
-                'pcount': count,
-                'ptype': 1,
-            }
-            resp = self.sess.get(url=url, params=payload, headers=headers)
-            if 'https://cart.jd.com/cart.action' in resp.url:  # 套装商品加入购物车后直接跳转到购物车页面
-                result = True
-            else:  # 普通商品成功加入购物车后会跳转到提示 "商品已成功加入购物车！" 页面
-                soup = BeautifulSoup(resp.text, "html.parser")
-                result = bool(soup.select('h3.ftx-02'))  # [<h3 class="ftx-02">商品已成功加入购物车！</h3>]
+        for sku_id, count in parse_sku_id(sku_ids = sku_ids).items():
+            result = False
+            while not result:
+                payload = {
+                    'pid': sku_id,
+                    'pcount': count,
+                    'ptype': 1,
+                }
+                resp = self.sess.get(url = url, params = payload, headers = headers)
+                if 'https://cart.jd.com/cart.action' in resp.url:  # 套装商品加入购物车后直接跳转到购物车页面
+                    result = True
+                else:  # 普通商品成功加入购物车后会跳转到提示 "商品已成功加入购物车！" 页面
+                    soup = BeautifulSoup(resp.text, "html.parser")
+                    result = bool(soup.select('h3.ftx-02'))  # [<h3 class="ftx-02">商品已成功加入购物车！</h3>]
 
-            if result:
-                logger.info('%s x %s 已成功加入购物车', sku_id, count)
-            else:
-                logger.error('%s 添加到购物车失败', sku_id)
+                if result:
+                    logger.info('%s x %s 已成功加入购物车', sku_id, count)
+                else:
+                    # 如果加入购物车失败重试加入购物车
+                    logger.error('%s 添加到购物车失败， 重试中...', sku_id)
+                    time.sleep(interval)
 
     @check_login
     def clear_cart(self):
@@ -665,8 +670,8 @@ class Assistant(object):
             'random': random.random(),
         }
         try:
-            select_resp = self.sess.post(url=select_url, data=data)
-            remove_resp = self.sess.post(url=remove_url, data=data)
+            select_resp = self.sess.post(url = select_url, data = data)
+            remove_resp = self.sess.post(url = remove_url, data = data)
             if (not response_status(select_resp)) or (not response_status(remove_resp)):
                 logger.error('购物车清空失败')
                 return False
@@ -686,12 +691,12 @@ class Assistant(object):
         soup = BeautifulSoup(resp.text, "html.parser")
 
         cart_detail = dict()
-        for item in soup.find_all(class_='item-item'):
+        for item in soup.find_all(class_ = 'item-item'):
             try:
                 sku_id = item['skuid']  # 商品id
                 # 例如：['increment', '8888', '100001071956', '1', '13', '0', '50067652554']
                 # ['increment', '8888', '100002404322', '2', '1', '0']
-                item_attr_list = item.find(class_='increment')['id'].split('_')
+                item_attr_list = item.find(class_ = 'increment')['id'].split('_')
                 p_type = item_attr_list[4]
                 promo_id = target_id = item_attr_list[-1] if len(item_attr_list) == 7 else 0
 
@@ -723,7 +728,7 @@ class Assistant(object):
             'random': random.random()
             # 'locationId' can be ignored
         }
-        resp = self.sess.post(url, data=data)
+        resp = self.sess.post(url, data = data)
         return response_status(resp)
 
     def _change_item_num_in_cart(self, sku_id, vender_id, num, p_type, target_id, promo_id):
@@ -755,7 +760,7 @@ class Assistant(object):
             'User-Agent': self.user_agent,
             'Referer': 'https://cart.jd.com/cart',
         }
-        resp = self.sess.post(url, data=data, headers=headers)
+        resp = self.sess.post(url, data = data, headers = headers)
         return json.loads(resp.text)['sortedWebCartResult']['achieveSevenState'] == 2
 
     def _add_or_change_cart_item(self, cart, sku_id, count):
@@ -772,16 +777,16 @@ class Assistant(object):
             logger.info('%s 已在购物车中，调整数量为 %s', sku_id, count)
             cart_item = cart.get(sku_id)
             return self._change_item_num_in_cart(
-                sku_id=sku_id,
-                vender_id=cart_item.get('vender_id'),
-                num=count,
-                p_type=cart_item.get('p_type'),
-                target_id=cart_item.get('target_id'),
-                promo_id=cart_item.get('promo_id')
+                sku_id = sku_id,
+                vender_id = cart_item.get('vender_id'),
+                num = count,
+                p_type = cart_item.get('p_type'),
+                target_id = cart_item.get('target_id'),
+                promo_id = cart_item.get('promo_id')
             )
         else:
             logger.info('%s 不在购物车中，开始加入购物车，数量 %s', sku_id, count)
-            return self.add_item_to_cart(sku_ids={sku_id: count})
+            return self.add_item_to_cart(sku_ids = {sku_id: count})
 
     @check_login
     def get_checkout_page_detail(self):
@@ -797,7 +802,7 @@ class Assistant(object):
             'rid': str(int(time.time() * 1000)),
         }
         try:
-            resp = self.sess.get(url=url, params=payload)
+            resp = self.sess.get(url = url, params = payload)
             if not response_status(resp):
                 logger.error('获取订单结算页信息失败')
                 return
@@ -806,9 +811,9 @@ class Assistant(object):
             self.risk_control = get_tag_value(soup.select('input#riskControl'), 'value')
 
             order_detail = {
-                'address': soup.find('span', id='sendAddr').text[5:],  # remove '寄送至： ' from the begin
-                'receiver': soup.find('span', id='sendMobile').text[4:],  # remove '收件人:' from the begin
-                'total_price': soup.find('span', id='sumPayPriceId').text[1:],  # remove '￥' from the begin
+                'address': soup.find('span', id = 'sendAddr').text[5:],  # remove '寄送至： ' from the begin
+                'receiver': soup.find('span', id = 'sendMobile').text[4:],  # remove '收件人:' from the begin
+                'total_price': soup.find('span', id = 'sumPayPriceId').text[1:],  # remove '￥' from the begin
                 'items': []
             }
             # TODO: 这里可能会产生解析问题，待修复
@@ -879,7 +884,7 @@ class Assistant(object):
             'User-Agent': self.user_agent,
             'Referer': 'https://trade.jd.com/shopping/dynamic/invoice/saveInvoice.action',
         }
-        self.sess.post(url=url, data=data, headers=headers)
+        self.sess.post(url = url, data = data, headers = headers)
 
     @check_login
     def submit_order(self):
@@ -922,7 +927,7 @@ class Assistant(object):
         }
 
         try:
-            resp = self.sess.post(url=url, data=data, headers=headers)
+            resp = self.sess.post(url = url, data = data, headers = headers)
             resp_json = json.loads(resp.text)
 
             # 返回信息示例：
@@ -939,7 +944,7 @@ class Assistant(object):
                 order_id = resp_json.get('orderId')
                 logger.info('订单提交成功! 订单号：%s', order_id)
                 if self.send_message:
-                    self.messenger.send(text='jd-assistant 订单提交成功', desp='订单号：%s' % order_id)
+                    self.messenger.send(text = 'jd-assistant 订单提交成功', desp = '订单号：%s' % order_id)
                 return True
             else:
                 message, result_code = resp_json.get('message'), resp_json.get('resultCode')
@@ -958,7 +963,7 @@ class Assistant(object):
             return False
 
     @check_login
-    def submit_order_with_retry(self, retry=3, interval=4):
+    def submit_order_with_retry(self, retry = 3, interval = 4):
         """提交订单，并且带有重试功能
         :param retry: 重试次数
         :param interval: 重试间隔
@@ -979,7 +984,7 @@ class Assistant(object):
             return False
 
     @check_login
-    def submit_order_by_time(self, buy_time, retry=4, interval=5):
+    def submit_order_by_time(self, buy_time, retry = 4, interval = 5):
         """定时提交商品订单
 
         重要：该方法只适用于普通商品的提交订单，事先需要先将商品加入购物车并勾选✓。
@@ -989,7 +994,7 @@ class Assistant(object):
         :param interval: 下单执行间隔，可选参数，默认5秒
         :return:
         """
-        t = Timer(buy_time=buy_time)
+        t = Timer(buy_time = buy_time)
         t.start()
 
         for count in range(1, retry + 1):
@@ -1002,7 +1007,7 @@ class Assistant(object):
             logger.info('执行结束，提交订单失败！')
 
     @check_login
-    def get_order_info(self, unpaid=True):
+    def get_order_info(self, unpaid = True):
         """查询订单信息
         :param unpaid: 只显示未付款订单，可选参数，默认为True
         :return:
@@ -1019,7 +1024,7 @@ class Assistant(object):
         }
 
         try:
-            resp = self.sess.get(url=url, params=payload, headers=headers)
+            resp = self.sess.get(url = url, params = payload, headers = headers)
             if not response_status(resp):
                 logger.error('获取订单页信息失败')
                 return
@@ -1054,10 +1059,10 @@ class Assistant(object):
                 amount_div = table_body.find('div', {'class': 'amount'})
                 if amount_div:
                     spans = amount_div.select('span')
-                    pay_method = get_tag_value(spans, index=1)
+                    pay_method = get_tag_value(spans, index = 1)
                     # if the order is waiting for payment, the price after the discount is shown.
-                    sum_price = get_tag_value(amount_div.select('strong'), index=1)[1:] if wait_payment \
-                        else get_tag_value(spans, index=0)[4:]
+                    sum_price = get_tag_value(amount_div.select('strong'), index = 1)[1:] if wait_payment \
+                        else get_tag_value(spans, index = 0)[4:]
 
                 # get name and quantity of items in order
                 items_dict = dict()  # {'item_id_1': quantity_1, 'item_id_2': quantity_2, ...}
@@ -1102,7 +1107,7 @@ class Assistant(object):
             'Referer': 'https://item.jd.com/{}.html'.format(sku_id),
         }
         while True:
-            resp = self.sess.get(url=url, headers=headers, params=payload)
+            resp = self.sess.get(url = url, headers = headers, params = payload)
             resp_json = parse_json(resp.text)
             if resp_json.get('url'):
                 # https://divide.jd.com/user_routing?skuId=8654289&sn=c3f4ececd8461f0e4d7267e96a91e0e0&from=pc
@@ -1128,10 +1133,10 @@ class Assistant(object):
             'Host': 'marathon.jd.com',
             'Referer': 'https://item.jd.com/{}.html'.format(sku_id),
         }
-        self.sess.get(url=self.seckill_url.get(sku_id), headers=headers, allow_redirects=False)
+        self.sess.get(url = self.seckill_url.get(sku_id), headers = headers, allow_redirects = False)
 
     @deprecated
-    def request_seckill_checkout_page(self, sku_id, num=1):
+    def request_seckill_checkout_page(self, sku_id, num = 1):
         """访问抢购订单结算页面
         :param sku_id: 商品id
         :param num: 购买数量，可选参数，默认1个
@@ -1148,10 +1153,10 @@ class Assistant(object):
             'Host': 'marathon.jd.com',
             'Referer': 'https://item.jd.com/{}.html'.format(sku_id),
         }
-        self.sess.get(url=url, params=payload, headers=headers)
+        self.sess.get(url = url, params = payload, headers = headers)
 
     @deprecated
-    def _get_seckill_init_info(self, sku_id, num=1):
+    def _get_seckill_init_info(self, sku_id, num = 1):
         """获取秒杀初始化信息（包括：地址，发票，token）
         :param sku_id:
         :param num: 购买数量，可选参数，默认1个
@@ -1167,11 +1172,11 @@ class Assistant(object):
             'User-Agent': self.user_agent,
             'Host': 'marathon.jd.com',
         }
-        resp = self.sess.post(url=url, data=data, headers=headers)
+        resp = self.sess.post(url = url, data = data, headers = headers)
         return parse_json(resp.text)
 
     @deprecated
-    def _gen_seckill_order_data(self, sku_id, num=1):
+    def _gen_seckill_order_data(self, sku_id, num = 1):
         """生成提交抢购订单所需的请求体参数
         :param sku_id: 商品id
         :param num: 购买数量，可选参数，默认1个
@@ -1224,7 +1229,7 @@ class Assistant(object):
         return data
 
     @deprecated
-    def submit_seckill_order(self, sku_id, num=1):
+    def submit_seckill_order(self, sku_id, num = 1):
         """提交抢购（秒杀）订单
         :param sku_id: 商品id
         :param num: 购买数量，可选参数，默认1个
@@ -1242,7 +1247,8 @@ class Assistant(object):
             'Referer': 'https://marathon.jd.com/seckill/seckill.action?skuId={0}&num={1}&rid={2}'.format(
                 sku_id, num, int(time.time())),
         }
-        resp = self.sess.post(url=url, params=payload, data=self.seckill_order_data.get(sku_id), headers=headers)
+        resp = self.sess.post(url = url, params = payload, data = self.seckill_order_data.get(sku_id),
+                              headers = headers)
         resp_json = parse_json(resp.text)
         # 返回信息
         # 抢购失败：
@@ -1263,7 +1269,7 @@ class Assistant(object):
             return False
 
     @deprecated
-    def exec_seckill(self, sku_id, retry=4, interval=4, num=1):
+    def exec_seckill(self, sku_id, retry = 4, interval = 4, num = 1):
         """立即抢购
 
         抢购商品的下单流程与普通商品不同，不支持加入购物车，主要执行流程如下：
@@ -1291,7 +1297,7 @@ class Assistant(object):
             return False
 
     @deprecated
-    def exec_seckill_by_time(self, sku_ids, buy_time, retry=4, interval=4, num=1):
+    def exec_seckill_by_time(self, sku_ids, buy_time, retry = 4, interval = 4, num = 1):
         """定时抢购
         :param sku_ids: 商品id，多个商品id用逗号进行分割，如"123,456,789"
         :param buy_time: 下单时间，例如：'2018-09-28 22:45:50.000'
@@ -1300,10 +1306,10 @@ class Assistant(object):
         :param num: 购买数量，可选参数，默认1个
         :return:
         """
-        items_dict = parse_sku_id(sku_ids=sku_ids)
+        items_dict = parse_sku_id(sku_ids = sku_ids)
         logger.info('准备抢购商品:%s', list(items_dict.keys()))
 
-        t = Timer(buy_time=buy_time)
+        t = Timer(buy_time = buy_time)
         t.start()
 
         for sku_id in items_dict:
@@ -1311,7 +1317,7 @@ class Assistant(object):
             self.exec_seckill(sku_id, retry, interval, num)
 
     @check_login
-    def exec_reserve_seckill_by_time(self, sku_id, buy_time, retry=4, interval=4, num=1):
+    def exec_reserve_seckill_by_time(self, sku_id, buy_time, retry = 4, interval = 4, num = 1):
         """定时抢购`预约抢购商品`
 
         预约抢购商品特点：
@@ -1330,10 +1336,10 @@ class Assistant(object):
         :return:
         """
 
-        t = Timer(buy_time=buy_time)
+        t = Timer(buy_time = buy_time)
         t.start()
 
-        self.add_item_to_cart(sku_ids={sku_id: num})
+        self.add_item_to_cart(sku_ids = {sku_id: num})
 
         for count in range(1, retry + 1):
             logger.info('第[%s/%s]次尝试提交订单', count, retry)
@@ -1345,7 +1351,8 @@ class Assistant(object):
             logger.info('执行结束，提交订单失败！')
 
     @check_login
-    def buy_item_in_stock(self, sku_ids, area, wait_all=False, stock_interval=3, submit_retry=3, submit_interval=5):
+    def buy_item_in_stock(self, sku_ids, area, wait_all = False, stock_interval = 3, submit_retry = 3,
+                          submit_interval = 5):
         """根据库存自动下单商品
         :param sku_ids: 商品id。可以设置多个商品，也可以带数量，如：'1234' 或 '1234,5678' 或 '1234:2' 或 '1234:2,5678:3'
         :param area: 地区id
@@ -1357,13 +1364,13 @@ class Assistant(object):
         """
         items_dict = parse_sku_id(sku_ids)
         items_list = list(items_dict.keys())
-        area_id = parse_area_id(area=area)
+        area_id = parse_area_id(area = area)
 
         if not wait_all:
             logger.info('下单模式：%s 任一商品有货并且未下架均会尝试下单', items_list)
             while True:
                 for (sku_id, count) in items_dict.items():
-                    if not self.if_item_can_be_ordered(sku_ids={sku_id: count}, area=area_id):
+                    if not self.if_item_can_be_ordered(sku_ids = {sku_id: count}, area = area_id):
                         logger.info('%s 不满足下单条件，%ss后进行下一次查询', sku_id, stock_interval)
                     else:
                         logger.info('%s 满足下单条件，开始执行', sku_id)
@@ -1376,7 +1383,7 @@ class Assistant(object):
         else:
             logger.info('下单模式：%s 所有都商品同时有货并且未下架才会尝试下单', items_list)
             while True:
-                if not self.if_item_can_be_ordered(sku_ids=sku_ids, area=area_id):
+                if not self.if_item_can_be_ordered(sku_ids = sku_ids, area = area_id):
                     logger.info('%s 不满足下单条件，%ss后进行下一次查询', items_list, stock_interval)
                 else:
                     logger.info('%s 满足下单条件，开始执行', items_list)
